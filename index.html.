@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Наша маленькая галактика 💗</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;overflow-x:hidden;
+ display:flex;align-items:center;justify-content:center;
+ padding:20px;color:white;text-align:center;
+ font-family:Arial,sans-serif;
+ background:radial-gradient(ellipse at 50% 20%,#39216d,#130b32 55%,#030514);
+}
+#stars{
+ position:fixed;inset:0;pointer-events:none;
+ background-image:
+ radial-gradient(white 1px,transparent 1px),
+ radial-gradient(#c8b5ff 1px,transparent 1px);
+ background-size:37px 37px,71px 71px;
+ animation:stars 35s linear infinite;
+}
+@keyframes stars{to{transform:translateY(-70px)}}
+main{
+ position:relative;width:100%;max-width:470px;
+ padding:30px 22px;border-radius:25px;
+ background:#100b2ddd;
+ border:1px solid #8766c8;
+ box-shadow:0 0 45px #8255ff55;
+}
+h1{color:#ffc7ed}
+p{line-height:1.7;color:#e1d9ff}
+.heart{font-size:75px;animation:pulse 1.8s infinite}
+@keyframes pulse{50%{transform:scale(1.15)}}
+button{
+ border:0;border-radius:30px;padding:14px 23px;
+ margin:7px;font-size:16px;font-weight:bold;
+ cursor:pointer;color:white;
+}
+.yes{background:linear-gradient(110deg,#ec62bd,#8767ff)}
+.no{background:#48415e}
+.hidden{display:none}
+input{
+ padding:13px;border-radius:12px;border:1px solid #a78be8;
+ background:#21183d;color:white;text-align:center;
+ font-size:18px;width:150px;
+}
+.small{font-size:12px;color:#aaa1d1}
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<main>
+
+<section id="login">
+ <div class="heart">🌌</div>
+ <h1>Наша маленькая галактика</h1>
+ <p>Для тебя приготовлено маленькое приключение...</p>
+ <input id="pass" type="password" maxlength="4" placeholder="Пароль">
+ <br>
+ <button class="yes" onclick="enter()">Войти ✨</button>
+ <p id="error"></p>
+</section>
+
+<section id="welcome" class="hidden">
+ <div class="heart">⭐</div>
+ <h1>Добро пожаловать!</h1>
+ <p>Тебя ждёт небольшое путешествие по галактике.</p>
+ <button class="yes" onclick="show('quest')">Начать путешествие 🚀</button>
+</section>
+
+<section id="quest" class="hidden">
+ <div class="heart">✨</div>
+ <h1 id="question"></h1>
+ <p id="progress"></p>
+ <button class="yes" onclick="next()">Да ❤️</button>
+ <button class="no" onclick="next()">Нет</button>
+ <p class="small">Выбирай любой ответ, чтобы продолжить.</p>
+</section>
+
+<section id="king" class="hidden">
+ <div class="heart">👑</div>
+ <h1>Король галактики</h1>
+ <p>Ты прошла все испытания! Но впереди тебя ждёт кое-что особенное...</p>
+ <button class="yes" onclick="show('final')">Узнать секрет 💗</button>
+</section>
+
+<section id="final" class="hidden">
+ <div class="heart">💗</div>
+ <h1>Я долго не решался это сказать...</h1>
+ <p>Но больше не хочу скрывать. Ты стала для меня очень особенным человеком. Ты мне нравишься. 💗</p>
+ <h2>Может, попробуем быть вместе? 💗</h2>
+ <button class="yes" onclick="show('yesEnd');celebrate()">Да ❤️</button>
+ <button class="no" onclick="show('noEnd')">Нет</button>
+</section>
+
+<section id="yesEnd" class="hidden">
+ <div class="heart">💖</div>
+ <h1>Ура! ✨</h1>
+ <p>Ты сделала этот день особенным.</p>
+ <p>Спасибо, что дочитала до конца. ❤️</p>
+ <p>Пусть наша маленькая галактика будет наполнена счастливыми моментами!</p>
+</section>
+
+<section id="noEnd" class="hidden">
+ <div class="heart">🌟</div>
+ <h1>Спасибо за честность</h1>
+ <p>Я рад, что ты прошла этот маленький квест. Я уважаю твой ответ. ❤️</p>
+</section>
+
+</main>
+
+<script>
+const questions=[
+ "Ты самая лучшая?",
+ "Ты прекрасна?",
+ "Ты заслуживаешь счастья?",
+ "Ты самая красивая?"
+];
+
+let current=0;
+
+function show(id){
+ document.querySelectorAll("main section").forEach(s=>{
+  s.classList.add("hidden");
+ });
+ document.getElementById(id).classList.remove("hidden");
+ window.scrollTo(0,0);
+}
+
+function enter(){
+ const password=document.getElementById("pass").value;
+ if(password==="1212"){
+  show("welcome");
+ }else{
+  document.getElementById("error").textContent="Неверный пароль ❤️";
+ }
+}
+
+function render(){
+ document.getElementById("question").textContent=questions[current];
+ document.getElementById("progress").textContent=
+ "Испытание "+(current+1)+" из "+questions.length;
+}
+
+function next(){
+ current++;
+ if(current<questions.length){
+  render();
+ }else{
+  show("king");
+ }
+}
+
+function celebrate(){
+ const icons=["💗","✨","⭐","💜","🌟"];
+ for(let i=0;i<30;i++){
+  const el=document.createElement("span");
+  el.textContent=icons[Math.floor(Math.random()*icons.length)];
+  el.style.position="fixed";
+  el.style.left=Math.random()*100+"vw";
+  el.style.top=Math.random()*100+"vh";
+  el.style.fontSize="24px";
+  el.style.pointerEvents="none";
+  el.style.zIndex="10";
+  document.body.appendChild(el);
+  el.animate([
+   {transform:"translateY(0)",opacity:1},
+   {transform:"translateY(-180px)",opacity:0}
+  ],{duration:2500});
+  setTimeout(()=>el.remove(),2600);
+ }
+}
+</script>
+</body>
+</html>
